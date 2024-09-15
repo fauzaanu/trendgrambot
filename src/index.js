@@ -26,23 +26,24 @@ async function generateRelevantHashtags(AI, userMessage) {
 			messages: [
 				{
 					role: "system",
-					content: `You are an AI assistant that generates relevant hashtags for given text. Your task is to analyze the content and provide exactly 5 relevant hashtags${isFinancialRelated ? ' or $tags' : ''}.
+					content: `You are an AI assistant that generates relevant hashtags for given text. Your task is to analyze the content and provide exactly 10 relevant hashtags${isFinancialRelated ? ' or $tags' : ''}. The goal is to help users discover more content related to the given text while maintaining a balance between specificity and popularity.
 
 					Guidelines:
 					1. Use #[word] format for general topics.
 					${isFinancialRelated ? '2. Use $[symbol] format for cryptocurrencies or financial markets.' : ''}
-					${isFinancialRelated ? '3' : '2'}. Ensure relevance to the main topics in the text.
-					${isFinancialRelated ? '4' : '3'}. Be specific but not too niche.
-					${isFinancialRelated ? '5' : '4'}. Consider trending topics if applicable.
-					${isFinancialRelated ? '6' : '5'}. Avoid duplicates or very similar tags.
-					${isFinancialRelated ? '7' : '6'}. Do not use spaces within tags.
-					${isFinancialRelated ? '8' : '7'}. Use lowercase for all characters in the tags.
+					${isFinancialRelated ? '3' : '2'}. Prefer single-word hashtags, but use compound words or multi-word tags when necessary for clarity or specificity.
+					${isFinancialRelated ? '4' : '3'}. Ensure relevance to the main topics in the text.
+					${isFinancialRelated ? '5' : '4'}. Strike a balance between specific and general tags to maximize discoverability.
+					${isFinancialRelated ? '6' : '5'}. Consider trending topics if applicable.
+					${isFinancialRelated ? '7' : '6'}. Avoid duplicates or very similar tags.
+					${isFinancialRelated ? '8' : '7'}. Do not use spaces within tags.
+					${isFinancialRelated ? '9' : '8'}. Use lowercase for all characters in the tags.
 
-					Always return exactly 5 tags, no more, no less.`
+					Always return exactly 10 tags, no more, no less.`
 				},
 				{
 					role: "user",
-					content: `Generate 5 relevant hashtags${isFinancialRelated ? ' or $tags' : ''} for the following text: "${userMessage}". 
+					content: `Generate 10 relevant hashtags${isFinancialRelated ? ' or $tags' : ''} for the following text: "${userMessage}". 
 					Return only the tags, separated by spaces, without any additional text or explanation. Ensure all tags are in lowercase.`
 				}
 			],
@@ -51,7 +52,7 @@ async function generateRelevantHashtags(AI, userMessage) {
 		const tags = tagResponse.response.trim().toLowerCase().split(/\s+/);
 		const validTags = tags.filter(tag => tag.startsWith('#') || (isFinancialRelated && tag.startsWith('$')));
 
-		if (validTags.length === 5) {
+		if (validTags.length === 10) {
 			return validTags.join(' ');
 		}
 
