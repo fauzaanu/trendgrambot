@@ -92,7 +92,18 @@ export default {
 		}
 
 		const chatId = telegramUpdate.message.chat.id;
-		const userMessage = telegramUpdate.message.text;
+		let userMessage = telegramUpdate.message.text;
+
+		// Check if the message contains a caption (for images or files)
+		if (!userMessage && telegramUpdate.message.caption) {
+			userMessage = telegramUpdate.message.caption;
+		}
+
+		// If there's still no text content, we can't generate hashtags
+		if (!userMessage) {
+			await sendTelegramMessage(chatId, "Please send a message with text content to generate hashtags.", env.TELEGRAM_API_KEY);
+			return new Response('No text content to process', {status: 200});
+		}
 
 		let hashtags;
 		let attempts = 0;
