@@ -76,14 +76,22 @@ export default {
 		const chatId = telegramUpdate.message.chat.id;
 		const userMessage = telegramUpdate.message.text;
 
-		try {
-			const hashtags = await generateRelevantHashtags(env.AI, userMessage);
-			await sendTelegramMessage(chatId, hashtags, env.TELEGRAM_API_KEY);
-			return new Response('Hashtags sent to Telegram successfully', {status: 200});
-		} catch (error) {
-			console.error('Error generating hashtags:', error);
-			await sendTelegramMessage(chatId, "Sorry, I couldn't generate hashtags for your message. Please try again.", env.TELEGRAM_API_KEY);
-			return new Response('Error generating hashtags', {status: 500});
+		let hashtags;
+		let attempts = 0;
+		const maxAttempts = 3;
+
+		while (attempts < maxAttempts) {
+			try {
+				hashtags = await generateRelevantHashtags(env.AI, userMessage);
+				await sendTelegramMessage(chatId, hashtags, env.TELEGRAM_API_KEY);
+				return new Response('Hashtags sent to Telegram successfully', {status: 200});
+			} catch (error) {
+				console.error(`Attempt ${attempts + 1} failed. Error generating hashtags:`, error);
+				attempts++;
+			}
 		}
+
+		console.error('Failed to generate hashtags after maximum attempts');
+		return new Response('Error generating hashtags', {status: 500});
 	},
 };
