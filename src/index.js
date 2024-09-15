@@ -18,19 +18,19 @@ async function generateRelevantHashtags(AI, userMessage) {
 					5. Consider trending topics if applicable.
 					6. Avoid duplicates or very similar tags.
 					7. Do not use spaces within tags.
-					8. Capitalize each word in multi-word hashtags.
+					8. Use lowercase for all characters in the tags.
 
 					Always return exactly 5 tags, no more, no less.`
 				},
 				{
 					role: "user",
 					content: `Generate 5 relevant hashtags or $tags for the following text: "${userMessage}". 
-					Return only the tags, separated by spaces, without any additional text or explanation.`
+					Return only the tags, separated by spaces, without any additional text or explanation. Ensure all tags are in lowercase.`
 				}
 			],
 		});
 
-		const tags = response.response.trim().split(/\s+/);
+		const tags = response.response.trim().toLowerCase().split(/\s+/);
 		const validTags = tags.filter(tag => tag.startsWith('#') || tag.startsWith('$'));
 
 		if (validTags.length === 5) {
