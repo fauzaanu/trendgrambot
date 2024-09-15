@@ -1,0 +1,8 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "trendgrambot"
+main = "src/index.js"
+compatibility_date = "2024-06-20"
+compatibility_flags = ["nodejs_compat"]
+
+[ai]
+binding = "AI" # i.e. available in your Worker on env.AI
