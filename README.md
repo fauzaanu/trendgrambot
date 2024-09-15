@@ -12,9 +12,3 @@ This bot is a simple bot that generates hashtags for any piece of text using Met
 
 Add an environment variable `TELEGRAM_API_KEY` inside the workers dashboard or even in the wrangler.toml file.
 This is the API key for the telegram bot. You can get it by creating a new bot on telegram and getting the API key from BotFather.
-
-
-GET https://api.telegram.org/bot7465635862:AAHywlP_Nudayuh2qfefoaSoiTSNnj8tcp0/setWebhook?url=https://trendgrambot.dvcrypto.workers.dev
-
-<> 2024-09-16T014952.200.json
-###
